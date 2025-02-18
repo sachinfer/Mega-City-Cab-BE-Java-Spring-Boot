@@ -11,6 +11,8 @@ public class Car {
     private String make;
     private String model;
     private String status;  // Available, Rented, etc.
+    private Integer quantity; // New field for quantity
+    private Double price; // New field for price
 
     // Getters and Setters
     public Integer getId() {
@@ -43,5 +45,21 @@ public class Car {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
