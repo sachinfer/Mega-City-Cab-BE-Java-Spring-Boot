@@ -1,3 +1,5 @@
+// src/main/java/com/example/demo/service/BookingService.java
+
 package com.example.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,7 @@ import com.example.demo.repository.BookingRepository;
 
 @Service
 public class BookingService {
-    
+
     @Autowired
     private BookingRepository bookingRepository;
 
