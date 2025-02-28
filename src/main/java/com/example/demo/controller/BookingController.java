@@ -21,6 +21,8 @@ public class BookingController {
     @PostMapping("/save")
     public ResponseEntity<Booking> saveBooking(@RequestBody Booking booking) {
         Booking savedBooking = bookingService.saveBooking(booking);
+        System.out.println("Booking created"+ booking);
+
         return ResponseEntity.ok(savedBooking);
     }
 }
