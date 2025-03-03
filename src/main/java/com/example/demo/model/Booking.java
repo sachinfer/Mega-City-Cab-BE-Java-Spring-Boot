@@ -24,11 +24,12 @@ public class Booking {
     private String vehicleName;
     private LocalTime time;
     private LocalDate date;
+    private String status;
 
     // Constructors
     public Booking() {}
 
-    public Booking(String name, String address, String phoneNumber, String email, String vehicleName, LocalTime time, LocalDate date) {
+    public Booking(String name, String address, String phoneNumber, String email, String vehicleName, LocalTime time, LocalDate date, String status) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -36,6 +37,7 @@ public class Booking {
         this.vehicleName = vehicleName;
         this.time = time;
         this.date = date;
+        this.status = status;
     }
 
     // Getters and Setters
@@ -62,4 +64,7 @@ public class Booking {
 
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate date) { this.date = date; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
