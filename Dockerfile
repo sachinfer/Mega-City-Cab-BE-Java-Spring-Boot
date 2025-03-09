@@ -1,5 +1,5 @@
-# Step 1: Use a Maven image to build the Spring Boot application
-FROM maven:3.8.6-openjdk-17-slim AS build
+# Step 1: Use a valid Maven image
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 # Step 2: Set the working directory in the container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY src /app/src
 RUN mvn clean package -DskipTests
 
 # Step 7: Use OpenJDK to run the Spring Boot app
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-slim
 
 # Step 8: Copy the built jar file from the build stage
 COPY --from=build /app/target/*.jar /app/app.jar
