@@ -1,5 +1,5 @@
 # Step 1: Use a Maven image to build the Spring Boot application
-FROM maven:3.8.6-openjdk-17 AS build
+FROM maven:3.8.6-openjdk-17-slim AS build
 
 # Step 2: Set the working directory in the container
 WORKDIR /app
