@@ -1,36 +1,43 @@
 name: Java Test Pipeline
 
-on:
-  push:
-    branches:
-      - main
-      - docker
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   test:
-    name: Run Tests
     runs-on: ubuntu-latest
-    environment: dev
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: vehicle_portal
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set Up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: maven
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
 
-      - name: Verify Database Connection
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mysql-client
-          mysql -h ${{ secrets.DB_HOST }} -u ${{ secrets.DB_USER }} -p${{ secrets.DB_PASS }} -e "SELECT 1"
+    - name: Install MySQL client
+      run: sudo apt-get install -y mysql-client
 
-      - name: Install Dependencies & Run Tests
-        run: mvn clean test
+    - name: Verify MySQL connection
+      run: mysql -h 127.0.0.1 -P 3306 -u root -proot -e "SELECT 1"
+
+    - name: Run tests
+      run: ./mvnw test
+      env:
+        SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/vehicle_portal
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: root
