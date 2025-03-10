@@ -5,10 +5,10 @@ on:
     workflows: ["Java Test Pipeline"]   # Trigger when the test pipeline completes
     types:
       - completed
-  push:
-    branches:
-      # - main  # Trigger the workflow on push to the main branch
-      # - docker
+  # push:
+  #   branches:
+  #     # - main  # Trigger the workflow on push to the main branch
+  #     # - docker
   workflow_dispatch:  # Allow manual trigger
 
 jobs:
