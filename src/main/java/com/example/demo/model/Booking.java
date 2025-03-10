@@ -3,6 +3,7 @@ package com.example.demo.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +25,9 @@ public class Booking {
     private String vehicleName;
     private LocalTime time;
     private LocalDate date;
-    private String status;
+
+    @Column(nullable = false)
+    private String status = "PENDING"; // ✅ Default value to prevent NULL errors
 
     // Constructors
     public Booking() {}
@@ -37,7 +40,7 @@ public class Booking {
         this.vehicleName = vehicleName;
         this.time = time;
         this.date = date;
-        this.status = status;
+        this.status = (status != null) ? status : "PENDING"; // ✅ Ensure non-null value
     }
 
     // Getters and Setters
@@ -66,5 +69,7 @@ public class Booking {
     public void setDate(LocalDate date) { this.date = date; }
 
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(String status) { 
+        this.status = (status != null) ? status : "PENDING"; // ✅ Ensure default value
+    }
 }
