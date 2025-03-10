@@ -13,6 +13,7 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    environment: dev
 
     steps:
       - name: Checkout Repository
@@ -33,4 +34,3 @@ jobs:
 
       - name: Install Dependencies & Run Tests
         run: mvn clean test
-        environment: dev
