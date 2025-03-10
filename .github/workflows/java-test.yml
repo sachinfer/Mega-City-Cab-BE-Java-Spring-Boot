@@ -33,3 +33,4 @@ jobs:
 
       - name: Install Dependencies & Run Tests
         run: mvn clean test
+        environment: dev
