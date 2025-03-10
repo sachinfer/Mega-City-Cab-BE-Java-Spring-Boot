@@ -1,49 +1,47 @@
 name: Build and Push Docker Image
 
 on:
+  workflow_run:
+    workflows: ["Java Test Pipeline"]   # Trigger when the test pipeline completes
+    types:
+      - completed
   push:
     branches:
       # - main  # Trigger the workflow on push to the main branch
-      - docker
-  workflow_dispatch:  # Allow manual trigger of the workflow
+      # - docker
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}  # Run if tests pass or manually triggered
     runs-on: ubuntu-latest
     environment: dev  # Add the environment name
 
     steps:
-      # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Docker Buildx (for multi-platform builds)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Step 3: Log in to Docker Hub securely using secrets
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 4: Get short commit SHA
       - name: Get short commit SHA
         id: short_sha
         run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)" >> $GITHUB_ENV
 
-      # Step 5: Get current date (YYYY-MM-DD)
-      - name: Get current date
+      - name: Get current date (YYYY-MM-DD)
         id: date_time
         run: echo "DATE_TIME=$(date -u +'%Y-%m-%d')" >> $GITHUB_ENV
 
-      # Step 6: Get current time (HH-MM-SS)
-      - name: Get current time
+      - name: Get current time (HH-MM-SS)
         id: current_time
         run: echo "TIME=$(date -u +'%H-%M-%S')" >> $GITHUB_ENV
 
-      # Step 7: Build and push Docker image with dynamic tags
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
