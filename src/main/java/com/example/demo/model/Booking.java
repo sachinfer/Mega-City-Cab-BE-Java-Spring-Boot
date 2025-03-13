@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -29,10 +30,17 @@ public class Booking {
     @Column(nullable = false)
     private String status = "PENDING"; // ✅ Default value to prevent NULL errors
 
+    @Column(nullable = false)
+    private String destination; // ✅ Added destination field
+
+    @Column(nullable = false)
+    private BigDecimal price; // ✅ Added price field for the booking price
+
     // Constructors
     public Booking() {}
 
-    public Booking(String name, String address, String phoneNumber, String email, String vehicleName, LocalTime time, LocalDate date, String status) {
+    public Booking(String name, String address, String phoneNumber, String email, String vehicleName, 
+                   LocalTime time, LocalDate date, String status, String destination, BigDecimal price) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -41,6 +49,8 @@ public class Booking {
         this.time = time;
         this.date = date;
         this.status = (status != null) ? status : "PENDING"; // ✅ Ensure non-null value
+        this.destination = destination;
+        this.price = price; // ✅ Set price
     }
 
     // Getters and Setters
@@ -72,4 +82,10 @@ public class Booking {
     public void setStatus(String status) { 
         this.status = (status != null) ? status : "PENDING"; // ✅ Ensure default value
     }
+
+    public String getDestination() { return destination; }
+    public void setDestination(String destination) { this.destination = destination; }
+
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 }
