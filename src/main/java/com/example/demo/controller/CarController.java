@@ -23,8 +23,14 @@ public class CarController {
 
     // Get car by ID
     @GetMapping("/{id}")
+<<<<<<< HEAD
     public Car getCarById(@PathVariable Integer id) {
         return carService.getCarById(id);
+=======
+    public Car getCarById(@PathVariable Long id) {
+        return carService.getCarById(id)
+                .orElseThrow(() -> new RuntimeException("Car not found with ID: " + id)); // Handle case if car is not found
+>>>>>>> 172ed910c6ce040bca5a2a2109e859a28d3b9cac
     }
 
     // Add a new car

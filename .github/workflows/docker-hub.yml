@@ -1,0 +1,54 @@
+name: Build and Push Docker Image
+
+on:
+  workflow_run:
+    workflows: ["Java Test Pipeline"]   # Trigger when the test pipeline completes
+    types:
+      - completed
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+      - docker
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}  # Run if tests pass or manually triggered
+    runs-on: ubuntu-latest
+    environment: dev  # Add the environment name
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Get short commit SHA
+        id: short_sha
+        run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)" >> $GITHUB_ENV
+
+      - name: Get current date (YYYY-MM-DD)
+        id: date_time
+        run: echo "DATE_TIME=$(date -u +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Get current time (HH-MM-SS)
+        id: current_time
+        run: echo "TIME=$(date -u +'%H-%M-%S')" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            sachinfe/megacity-car-java-be:latest
+            sachinfe/megacity-car-java-be:${{ github.ref_name }}
+            sachinfe/megacity-car-java-be:${{ env.SHORT_SHA }}
+            sachinfe/megacity-car-java-be:${{ github.ref_name }}-${{ env.DATE_TIME }}-${{ env.TIME }}
