@@ -1,26 +1,40 @@
 package com.example.demo.service;
 
-import java.util.List;
-
+import com.example.demo.model.Car;
+import com.example.demo.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Car;
-import com.example.demo.repository.CarRepository;
+import java.util.Optional;
 
 @Service
 public class CarService {
 
+    // Injecting the CarRepository for database operations
     @Autowired
     private CarRepository carRepository;
 
-    // Get available cars from the database
-    public List<Car> getAvailableCars() {
-        return carRepository.findByStatus("Available");  // Query repository for cars with status 'Available'
+    // Method to fetch a car by ID
+    public Car getCarById(Long id) {
+        Optional<Car> car = carRepository.findById(id);
+        return car.orElse(null); // Return the car if found, or null if not found
     }
 
-    // Add a new car to the database
-    public Car addCar(Car car) {
-        return carRepository.save(car);
+    // Method to update a car's details by ID
+    public Car updateCar(Long id, Car car) {
+        // Check if car with the given ID exists
+        if (carRepository.existsById(id)) {
+            car.setId(id); // Ensure the car's ID is set for updating
+            return carRepository.save(car); // Save the updated car
+        }
+        return null; // Return null if the car doesn't exist
+    }
+
+    // Method to delete a car by ID
+    public void deleteCar(Long id) {
+        // Only delete if the car exists in the database
+        if (carRepository.existsById(id)) {
+            carRepository.deleteById(id);
+        }
     }
 }

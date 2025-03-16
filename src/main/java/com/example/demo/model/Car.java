@@ -18,7 +18,20 @@ public class Car {
     private Integer quantity; // New field for quantity
     private Double price; // New field for price
 
+    // Default constructor
+    public Car() {}
+
+    // Constructor for easy creation of Car instances
+    public Car(String make, String model, String status, Integer quantity, Double price) {
+        this.make = make;
+        this.model = model;
+        this.status = status;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     // Getters and Setters
+
     public Integer getId() {
         return id;
     }

@@ -15,7 +15,7 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    // Get all available cars
+    // Get all available cars (you can add more logic like filtering by status if needed)
     @GetMapping("/available-cars")
     public List<Car> getAvailableCars() {
         return carService.getAvailableCars();
@@ -23,7 +23,7 @@ public class CarController {
 
     // Get car by ID
     @GetMapping("/{id}")
-    public Car getCarById(@PathVariable Long id) {
+    public Car getCarById(@PathVariable Integer id) {
         return carService.getCarById(id);
     }
 
@@ -35,13 +35,13 @@ public class CarController {
 
     // Update car details
     @PutMapping("/update/{id}")
-    public Car updateCar(@PathVariable Long id, @RequestBody Car updatedCar) {
+    public Car updateCar(@PathVariable Integer id, @RequestBody Car updatedCar) {
         return carService.updateCar(id, updatedCar);
     }
 
     // Delete a car
     @DeleteMapping("/delete/{id}")
-    public void deleteCar(@PathVariable Long id) {
+    public void deleteCar(@PathVariable Integer id) {
         carService.deleteCar(id);
     }
 }
