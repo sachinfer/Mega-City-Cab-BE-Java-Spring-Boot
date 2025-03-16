@@ -23,14 +23,9 @@ public class CarController {
 
     // Get car by ID
     @GetMapping("/{id}")
-<<<<<<< HEAD
-    public Car getCarById(@PathVariable Integer id) {
-        return carService.getCarById(id);
-=======
-    public Car getCarById(@PathVariable Long id) {
+    public Car getCarById(@PathVariable Long id) {  // Changed Integer to Long
         return carService.getCarById(id)
                 .orElseThrow(() -> new RuntimeException("Car not found with ID: " + id)); // Handle case if car is not found
->>>>>>> 172ed910c6ce040bca5a2a2109e859a28d3b9cac
     }
 
     // Add a new car
@@ -41,13 +36,13 @@ public class CarController {
 
     // Update car details
     @PutMapping("/update/{id}")
-    public Car updateCar(@PathVariable Integer id, @RequestBody Car updatedCar) {
+    public Car updateCar(@PathVariable Long id, @RequestBody Car updatedCar) {  // Changed Integer to Long
         return carService.updateCar(id, updatedCar);
     }
 
     // Delete a car
     @DeleteMapping("/delete/{id}")
-    public void deleteCar(@PathVariable Integer id) {
+    public void deleteCar(@PathVariable Long id) {  // Changed Integer to Long
         carService.deleteCar(id);
     }
 }
